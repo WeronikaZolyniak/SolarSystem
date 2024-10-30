@@ -18,6 +18,10 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	FMatrix CreateMatrixFromRadians(float Radians);
+
+	float const DegreesToRadiansConstant = 0.0176;
+
 	UPROPERTY(EditAnywhere);
 	float DegreesEachTick = 1;
 
