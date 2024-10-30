@@ -18,4 +18,13 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere);
+	float DegreesEachTick = 1;
+
+	float DegreesToRadians = 0;
+
+	FVector DistanceFromSun = FVector(0,0,0);
+
+	UPROPERTY(EditAnywhere)
+	ACelestialBody_CppBase* Sun;
 };
