@@ -20,12 +20,8 @@ public:
 
 	FMatrix CreateMatrixFromDegrees(float Degrees);
 
-	float const DegreesToRadiansConstant = 0.0176;
-
 	UPROPERTY(EditAnywhere);
 	float DegreesEachTick = 1;
-
-	float DegreesToRadians = 0;
 
 	FVector DistanceFromSun = FVector(0,0,0);
 

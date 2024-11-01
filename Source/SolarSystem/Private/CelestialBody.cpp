@@ -26,7 +26,6 @@ void ACelestialBody_CppBase::BeginPlay()
 		
 		DistanceFromSun = GetActorTransform().GetLocation() - Sun->GetActorTransform().GetLocation();
 		int StartDegrees = rand() % 361;
-		float StartDegreesToRadians = StartDegrees * DegreesToRadiansConstant;
 
 		FMatrix StartPositionMatrix = CreateMatrixFromDegrees(StartDegrees);
 
@@ -37,7 +36,6 @@ void ACelestialBody_CppBase::BeginPlay()
 		SetActorTransform(NewTransform);
 
 	}
-	DegreesToRadians = DegreesEachTick * DegreesToRadiansConstant;
 }
 
 void ACelestialBody_CppBase::Tick(float DeltaTime)
