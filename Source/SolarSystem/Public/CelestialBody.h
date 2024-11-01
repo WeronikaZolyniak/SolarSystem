@@ -18,7 +18,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
-	FMatrix CreateMatrixFromRadians(float Radians);
+	FMatrix CreateMatrixFromDegrees(float Degrees);
 
 	float const DegreesToRadiansConstant = 0.0176;
 
@@ -31,4 +31,11 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	ACelestialBody_CppBase* Sun;
+
+	UPROPERTY(EditAnywhere)
+	bool SunIsStatic = true;
+
+	FVector LastSunLocation;
+
+	FVector InitialPosition;
 };

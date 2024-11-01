@@ -10,19 +10,32 @@ void ACelestialBody_CppBase::BeginPlay()
 	Super::BeginPlay();
 	if (Sun)
 	{
+		InitialPosition = GetActorTransform().GetLocation();
+
+		if (!SunIsStatic)
+		{
+			LastSunLocation = Sun->GetActorTransform().GetLocation();
+			if (LastSunLocation != Sun->InitialPosition)
+			{
+				FVector Difference = LastSunLocation - Sun->InitialPosition;
+				SetActorTransform(FTransform(GetActorTransform().GetRotation(), GetActorTransform().GetLocation() + Difference, GetActorTransform().GetScale3D()));
+				DistanceFromSun = GetActorTransform().GetLocation() - Sun->GetActorTransform().GetLocation();
+				return;
+			}
+		}
+		
 		DistanceFromSun = GetActorTransform().GetLocation() - Sun->GetActorTransform().GetLocation();
 		int StartDegrees = rand() % 361;
 		float StartDegreesToRadians = StartDegrees * DegreesToRadiansConstant;
 
-		FMatrix StartPositionMatrix = CreateMatrixFromRadians(StartDegreesToRadians);
+		FMatrix StartPositionMatrix = CreateMatrixFromDegrees(StartDegrees);
 
 		DistanceFromSun = StartPositionMatrix.TransformVector(DistanceFromSun);
 
 		FTransform NewTransform;
 		NewTransform.SetLocation(DistanceFromSun);
-		NewTransform.SetRotation(GetActorTransform().GetRotation());
-		NewTransform.SetScale3D(GetActorTransform().GetScale3D());
 		SetActorTransform(NewTransform);
+
 	}
 	DegreesToRadians = DegreesEachTick * DegreesToRadiansConstant;
 }
@@ -31,25 +44,28 @@ void ACelestialBody_CppBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	FMatrix RotationMatrix = CreateMatrixFromRadians(DegreesToRadians);
+	if (!SunIsStatic)
+	{
+			FVector Difference = Sun->GetActorTransform().GetLocation() - LastSunLocation;
+			SetActorTransform(FTransform(GetActorTransform().GetRotation(), GetActorTransform().GetLocation() + Difference, GetActorTransform().GetScale3D()));
+			LastSunLocation = Sun->GetActorTransform().GetLocation();
+			DistanceFromSun = GetActorTransform().GetLocation() - Sun->GetActorTransform().GetLocation();			
+	}
+
+	FMatrix RotationMatrix = CreateMatrixFromDegrees(DegreesEachTick);
 
 	FVector Displacement = RotationMatrix.TransformVector(DistanceFromSun) - DistanceFromSun;
 
 	FTransform NewTransform;
 	NewTransform.SetLocation(GetActorTransform().GetLocation() + Displacement);
-	NewTransform.SetRotation(GetActorTransform().GetRotation());
-	NewTransform.SetScale3D(GetActorTransform().GetScale3D());
-
 
 	SetActorTransform(NewTransform);
-	DistanceFromSun = GetActorTransform().GetLocation();
+	DistanceFromSun = GetActorTransform().GetLocation();	
 }
 
-FMatrix ACelestialBody_CppBase::CreateMatrixFromRadians(float Radians)
+FMatrix ACelestialBody_CppBase::CreateMatrixFromDegrees(float Degrees)
 {
-	return FMatrix(FPlane(cos(Radians), -sin(Radians), 0, 0),
-		FPlane(sin(Radians), cos(Radians), 0, 0),
-		FPlane(0, 0, 0, 1),
-		FPlane(0, 0, 0, 1));
+	FMatrix Matrix = FRotationMatrix::Make(FQuat::MakeFromEuler(FVector(0, 0, Degrees)));
+	return Matrix;
 }
 
