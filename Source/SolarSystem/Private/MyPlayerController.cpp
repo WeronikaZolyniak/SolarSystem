@@ -24,7 +24,7 @@ void AMyPlayerController::SpawnAsteroid()
 
 	double ChargingTime = SecondsOnTimerEnd - SecondsOnTimerStart;
 
-	UE_LOG(LogTemp, Warning, TEXT("%f"), ChargingTime);
+	//UE_LOG(LogTemp, Warning, TEXT("%f"), ChargingTime);
 
 	FActorSpawnParameters SpawnParameters;
 	AAsteroid* Asteroid = GetWorld()->SpawnActor<AAsteroid>(AsteroidBPClass, GetPawn()->GetActorTransform(), SpawnParameters);

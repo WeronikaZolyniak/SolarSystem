@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "CelestialBody.h"
 #include "Asteroid.generated.h"
 
 UCLASS()
@@ -24,4 +25,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	double Speed = 0;
+
+	TArray<AActor*> CelestialBodies;
 };

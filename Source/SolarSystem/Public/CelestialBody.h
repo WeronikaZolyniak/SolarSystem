@@ -34,4 +34,10 @@ public:
 	FVector LastSunLocation;
 
 	FVector InitialPosition;
+
+	UPROPERTY(EditAnywhere)
+	float Gravity = 9.81;
+
+	UPROPERTY(EditAnywhere)
+	int GravitationalPullRadius = 500;
 };
