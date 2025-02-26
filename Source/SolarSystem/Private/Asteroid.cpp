@@ -37,7 +37,7 @@ void AAsteroid::Tick(float DeltaTime)
 			float CelestialBodyGravityValue = Cast<ACelestialBody_CppBase>(CelestialBody)->Gravity;
 			FVector GravityPull = CelestialBody->GetActorTransform().GetLocation() - GetActorTransform().GetLocation();
 			GravityPull.Normalize();
-			OverallGravityPull += GravityPull;
+			OverallGravityPull += GravityPull * CelestialBodyGravityValue;
 		}
 	}
 	//UE_LOG(LogTemp, Error, TEXT("%f %f %f"), OverallGravityPull.X, OverallGravityPull.Y, OverallGravityPull.Z);
